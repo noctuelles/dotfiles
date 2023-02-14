@@ -54,13 +54,14 @@ require('packer').startup(function(use)
   }
 
   -- Git related plugins
+  use "lukas-reineke/indent-blankline.nvim"
   use 'tpope/vim-fugitive'
   use 'tpope/vim-rhubarb'
+  use 'ThePrimeagen/harpoon'
   use 'lewis6991/gitsigns.nvim'
 
   use { "catppuccin/nvim", as = "catppuccin" }
   use 'nvim-lualine/lualine.nvim' -- Fancier statusline
-  use 'lukas-reineke/indent/blankline.nvim' -- Add indentation guides even on blank lines
   use 'numToStr/Comment.nvim' -- "gc" to comment visual regions/lines
   use 'tpope/vim-sleuth' -- Detect tabstop and shiftwidth automatically
 
@@ -298,12 +299,15 @@ vim.keymap.set('n', '<leader>/', function()
   })
 end, { desc = '[/] Fuzzily search in current buffer]' })
 
-vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
-vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
-vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
-vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
-vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
-vim.keymap.set('n', '<leader>sm', require('telescope.builtin').man_pages, { desc = '[S]earch [M]an' })
+local builtin = require('telescope.builtin')
+
+vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
+vim.keymap.set('n', '<leader>sgf', builtin.git_files, { desc = '[S]earch [G]it [F]iles' })
+vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
+vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
+vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
+vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
+vim.keymap.set('n', '<leader>sm', builtin.man_pages, { desc = '[S]earch [M]an' })
 vim.keymap.set('n', '<leader>t', require('nvim-tree').toggle, {desc = 'Toggle tree'})
 
 -- [[ Configure Treesitter ]]
@@ -426,13 +430,13 @@ end
 --  Add any additional override configuration in the following tables. They will be passed to
 --  the `settings` field of the server config. You must look up that documentation yourself.
 local servers = {
-  -- clangd = {},
-  -- gopls = {},
-  -- pyright = {},
-  -- rust_analyzer = {},
-  -- tsserver = {},
+  clangd = {},
+  --gopls = {},
+  pyright = {},
+  --rust_analyzer = {},
+  tsserver = {},
 
-  sumneko_lua = {
+  lua_ls = {
     Lua = {
       workspace = { checkThirdParty = false },
       telemetry = { enable = false },
